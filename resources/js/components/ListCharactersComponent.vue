@@ -9,8 +9,8 @@
           <img v-bind:src="character.image" class="card-img-top" v-bind:alt="character.name">
           <div class="card-body">
             <h5 class="card-title">{{ character.name }}</h5>
-            <button class="btn btn-primary rounded" @click="getDataCharacter(character.id)">Ver detalles</button>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <h6 class="card-text">{{character.location.name}}</h6>
+            <button class="btn btn-primary rounded" @click="getDataCharacter(character.url)">Ver detalles</button>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ export default {
       next:"",
       prev:"",
       modal : false,
-      currenCharacter: {}
+      currenCharacter: {},
     };
   },
   created(){
@@ -58,7 +58,7 @@ export default {
         const params = { page:this.page };
         let resul = axios.get(this.url)
         .then((res) => {
-         console.log(res.data.info)
+         console.log(res.data.results)
          this.next = res.data.info.next
          this.prev = res.data.info.prev
          this.pages = res.data.info.pages
@@ -75,13 +75,11 @@ export default {
       },
       getDataCharacter(id){
         this.getDetails(id);
-
       },
-      async getDetails(id){
-        let url="https://rickandmortyapi.com/api/character/"+id;
+      async getDetails(url){
+        
         let result = await axios.get(url);
         this.currenCharacter = result.data;
-        this.modal =  true;
         console.log('Personaje: '+this.currenCharacter);
       }
   },

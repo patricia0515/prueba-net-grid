@@ -5413,7 +5413,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         page: this.page
       };
       var resul = axios.get(this.url).then(function (res) {
-        console.log(res.data.info);
+        console.log(res.data.results);
         _this.next = res.data.info.next;
         _this.prev = res.data.info.prev;
         _this.pages = res.data.info.pages;
@@ -5430,23 +5430,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getDataCharacter: function getDataCharacter(id) {
       this.getDetails(id);
     },
-    getDetails: function getDetails(id) {
+    getDetails: function getDetails(url) {
       var _this2 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var url, result;
+        var result;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                url = "https://rickandmortyapi.com/api/character/" + id;
-                _context.next = 3;
+                _context.next = 2;
                 return axios.get(url);
-              case 3:
+              case 2:
                 result = _context.sent;
                 _this2.currenCharacter = result.data;
-                _this2.modal = true;
                 console.log('Personaje: ' + _this2.currenCharacter);
-              case 7:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -28601,24 +28599,22 @@ var render = function () {
                 _vm._v(_vm._s(character.name)),
               ]),
               _vm._v(" "),
+              _c("h6", { staticClass: "card-text" }, [
+                _vm._v(_vm._s(character.location.name)),
+              ]),
+              _vm._v(" "),
               _c(
                 "button",
                 {
                   staticClass: "btn btn-primary rounded",
                   on: {
                     click: function ($event) {
-                      return _vm.getDataCharacter(character.id)
+                      return _vm.getDataCharacter(character.url)
                     },
                   },
                 },
                 [_vm._v("Ver detalles")]
               ),
-              _vm._v(" "),
-              _c("p", { staticClass: "card-text" }, [
-                _vm._v(
-                  "This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."
-                ),
-              ]),
             ]),
           ]),
         ])
