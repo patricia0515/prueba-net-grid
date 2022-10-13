@@ -3,10 +3,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Example Component</div>
+                    <div class="card-header">Estamos fuera del login</div>
 
                     <div class="card-body">
-                        Hola, mi nombre es Patricia.
+                        Login.
                     </div>
                 </div>
             </div>
