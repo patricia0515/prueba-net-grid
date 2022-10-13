@@ -24,4 +24,3 @@ Route::resource('/users', UserController::class)->middleware('auth');
 Route::resource('/characters', CharacterController::class)->middleware('auth');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');

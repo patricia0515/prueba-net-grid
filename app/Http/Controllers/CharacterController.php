@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Traits\ConsumeApi;
 
 class CharacterController extends Controller
 {
-    use ConsumeApi;
     /**
      * Display a listing of the resource.
      *
@@ -47,8 +45,7 @@ class CharacterController extends Controller
      */
     public function show($id)
     {
-        $resource = '/character/'.$id;
-        return $this->getApi($url = null, $data = null, $resource);
+        //
     }
 
     /**
