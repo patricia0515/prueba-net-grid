@@ -16,7 +16,7 @@ use App\Http\Controllers\CharacterController;
 */
 
 Route::get('/', function () {
-    return view('/characters');
+    return view('/welcome');
 });
 
 Auth::routes();
