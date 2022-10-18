@@ -59,7 +59,7 @@ class UserController extends Controller
         $user->date = $request->date;
         $user->save();
 
-    return $nota;
+        return $nota;
     }
 
     /**

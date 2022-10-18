@@ -48,6 +48,11 @@ class CharacterController extends Controller
         //
     }
 
+    public function favorite($id)
+    {
+        
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

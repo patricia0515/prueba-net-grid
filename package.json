@@ -24,7 +24,9 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.9.1",
         "serve": "^14.0.1",
-        "vue-router": "^4.1.5"
+        "vue-router": "^4.1.5",
+        "vue2-bootstrap-modal": "^0.1.15"
     }
 }

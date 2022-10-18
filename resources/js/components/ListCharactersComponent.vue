@@ -1,24 +1,33 @@
 <template>
   <div>
     <h1 class="text-center">Lista de Personajes</h1>
-    <button class="btn btn-success" v-on:click="getData">Consultar</button>
 
     <div class="row row-cols-1 row-cols-md-4">
       <div class="col mb-2" v-for="character of characters" v-bind:key="character.id">
         <div class="card mt-4">
           <img v-bind:src="character.image" class="card-img-top" v-bind:alt="character.name">
           <div class="card-body">
-            <h5 class="card-title">{{ character.name }}</h5>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-light btn-circle btn-sm" @click="markFavorite(character.id)"></button>
+            </div>
+            
+            <h4 class="card-title">{{ character.name }}</h4>
+            
+            
             <h6 class="card-text">{{character.location.name}}</h6>
-            <button class="btn btn-primary rounded" @click="getDataCharacter(character.url)">Ver detalles</button>
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-primary" @click="getDataCharacter(character.id)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Ver detalles
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <nav aria-label="...">
       <ul class="pagination">
-        <li class="page-item" v-on:click="changePage(prev, page-1)">
-          <span class="page-link">Anterior</span>
+        <li class="page-item">
+          <a class="page-link" v-on:click="changePage(prev,page-1)">Anterior</a>
         </li>
         <li class="page-item">
           <a class="page-link">{{page}}</a>
@@ -27,8 +36,42 @@
           <a class="page-link" v-on:click="changePage(next,page+1)">Siguiente</a>
         </li>
       </ul>
-      
     </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header shadow">
+            <h5 class="modal-title text-uppercase fs-4" id="exampleModalLabel"><span class="badge rounded-pill text-bg-success">{{ infoCharacter.name }}</span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <blockquote class="blockquote mb-0">
+              <p class="fw-bolder">Genero.</p>
+              <footer class="blockquote-footer">{{ infoCharacter.gender }}</footer>
+            </blockquote>
+            <blockquote class="blockquote mb-0">
+              <p class="fw-bolder">Estado.</p>
+              <footer class="blockquote-footer">{{ infoCharacter.status }}</footer>
+            </blockquote>
+            <blockquote class="blockquote mb-0">
+              <p class="fw-bolder">Especie.</p>
+              <footer class="blockquote-footer">{{ infoCharacter.species }}</footer>
+            </blockquote>
+            <blockquote class="blockquote mb-0">
+              <p class="fw-bolder">Tipo.</p>
+              <footer class="blockquote-footer">{{ infoCharacter.type }}</footer>
+            </blockquote>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -37,15 +80,14 @@ export default {
   data() {
     return {
       characters:[],
-      modoEditar: true,
       page:1,
       pages:1,
       url:"https://rickandmortyapi.com/api/character",
       next:"",
       prev:"",
       modal : false,
-      currenCharacter: {},
-    };
+      infoCharacter: {}
+    }
   },
   created(){
     this.getData()
@@ -58,7 +100,6 @@ export default {
         const params = { page:this.page };
         let resul = axios.get(this.url)
         .then((res) => {
-         console.log(res.data.results)
          this.next = res.data.info.next
          this.prev = res.data.info.prev
          this.pages = res.data.info.pages
@@ -69,18 +110,23 @@ export default {
         });
       },
       changePage(url, page){
-        this.url = url
-        this.page = (page <= 0 || page > this.pages ) ? this. page : page;
+        this.url = url;
+        console.log(this.url)
+        this.page = (page <= 0 || page > this.pages ) ? this.page : page;
         this.getData();
       },
       getDataCharacter(id){
         this.getDetails(id);
       },
-      async getDetails(url){
-        
-        let result = await axios.get(url);
-        this.currenCharacter = result.data;
-        console.log('Personaje: '+this.currenCharacter);
+      markFavorite(id){
+      },
+      async getDetails(id){
+        this.infoCharacter = {};
+        let result = await axios.get(
+          `https://rickandmortyapi.com/api/character/${id}/`
+        );
+        this.infoCharacter = result.data;
+        this.modal = true;
       }
   },
 };

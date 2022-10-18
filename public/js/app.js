@@ -5387,19 +5387,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       characters: [],
-      modoEditar: true,
       page: 1,
       pages: 1,
       url: "https://rickandmortyapi.com/api/character",
       next: "",
       prev: "",
       modal: false,
-      currenCharacter: {}
+      infoCharacter: {}
     };
   },
   created: function created() {
@@ -5413,7 +5455,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         page: this.page
       };
       var resul = axios.get(this.url).then(function (res) {
-        console.log(res.data.results);
         _this.next = res.data.info.next;
         _this.prev = res.data.info.prev;
         _this.pages = res.data.info.pages;
@@ -5424,13 +5465,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     changePage: function changePage(url, page) {
       this.url = url;
+      console.log(this.url);
       this.page = page <= 0 || page > this.pages ? this.page : page;
       this.getData();
     },
     getDataCharacter: function getDataCharacter(id) {
       this.getDetails(id);
     },
-    getDetails: function getDetails(url) {
+    markFavorite: function markFavorite(id) {},
+    getDetails: function getDetails(id) {
       var _this2 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var result;
@@ -5438,13 +5481,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios.get(url);
-              case 2:
+                _this2.infoCharacter = {};
+                _context.next = 3;
+                return axios.get("https://rickandmortyapi.com/api/character/".concat(id, "/"));
+              case 3:
                 result = _context.sent;
-                _this2.currenCharacter = result.data;
-                console.log('Personaje: ' + _this2.currenCharacter);
-              case 5:
+                _this2.infoCharacter = result.data;
+                _this2.modal = true;
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -28578,12 +28622,6 @@ var render = function () {
     _c("h1", { staticClass: "text-center" }, [_vm._v("Lista de Personajes")]),
     _vm._v(" "),
     _c(
-      "button",
-      { staticClass: "btn btn-success", on: { click: _vm.getData } },
-      [_vm._v("Consultar")]
-    ),
-    _vm._v(" "),
-    _c(
       "div",
       { staticClass: "row row-cols-1 row-cols-md-4" },
       _vm._l(_vm.characters, function (character) {
@@ -28595,7 +28633,25 @@ var render = function () {
             }),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
-              _c("h5", { staticClass: "card-title" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "d-grid gap-2 d-md-flex justify-content-md-end",
+                },
+                [
+                  _c("button", {
+                    staticClass: "btn btn-light btn-circle btn-sm",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function ($event) {
+                        return _vm.markFavorite(character.id)
+                      },
+                    },
+                  }),
+                ]
+              ),
+              _vm._v(" "),
+              _c("h4", { staticClass: "card-title" }, [
                 _vm._v(_vm._s(character.name)),
               ]),
               _vm._v(" "),
@@ -28603,18 +28659,25 @@ var render = function () {
                 _vm._v(_vm._s(character.location.name)),
               ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary rounded",
-                  on: {
-                    click: function ($event) {
-                      return _vm.getDataCharacter(character.url)
+              _c("div", { staticClass: "d-grid gap-2" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: {
+                      type: "button",
+                      "data-bs-toggle": "modal",
+                      "data-bs-target": "#exampleModal",
+                    },
+                    on: {
+                      click: function ($event) {
+                        return _vm.getDataCharacter(character.id)
+                      },
                     },
                   },
-                },
-                [_vm._v("Ver detalles")]
-              ),
+                  [_vm._v("\n              Ver detalles\n            ")]
+                ),
+              ]),
             ]),
           ]),
         ])
@@ -28624,18 +28687,20 @@ var render = function () {
     _vm._v(" "),
     _c("nav", { attrs: { "aria-label": "..." } }, [
       _c("ul", { staticClass: "pagination" }, [
-        _c(
-          "li",
-          {
-            staticClass: "page-item",
-            on: {
-              click: function ($event) {
-                return _vm.changePage(_vm.prev, _vm.page - 1)
+        _c("li", { staticClass: "page-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "page-link",
+              on: {
+                click: function ($event) {
+                  return _vm.changePage(_vm.prev, _vm.page - 1)
+                },
               },
             },
-          },
-          [_c("span", { staticClass: "page-link" }, [_vm._v("Anterior")])]
-        ),
+            [_vm._v("Anterior")]
+          ),
+        ]),
         _vm._v(" "),
         _c("li", { staticClass: "page-item" }, [
           _c("a", { staticClass: "page-link" }, [_vm._v(_vm._s(_vm.page))]),
@@ -28657,9 +28722,105 @@ var render = function () {
         ]),
       ]),
     ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "exampleModal",
+          tabindex: "-1",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-sm" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header shadow" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title text-uppercase fs-4",
+                  attrs: { id: "exampleModalLabel" },
+                },
+                [
+                  _c(
+                    "span",
+                    { staticClass: "badge rounded-pill text-bg-success" },
+                    [_vm._v(_vm._s(_vm.infoCharacter.name))]
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "btn-close",
+                attrs: {
+                  type: "button",
+                  "data-bs-dismiss": "modal",
+                  "aria-label": "Close",
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("blockquote", { staticClass: "blockquote mb-0" }, [
+                _c("p", { staticClass: "fw-bolder" }, [_vm._v("Genero.")]),
+                _vm._v(" "),
+                _c("footer", { staticClass: "blockquote-footer" }, [
+                  _vm._v(_vm._s(_vm.infoCharacter.gender)),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("blockquote", { staticClass: "blockquote mb-0" }, [
+                _c("p", { staticClass: "fw-bolder" }, [_vm._v("Estado.")]),
+                _vm._v(" "),
+                _c("footer", { staticClass: "blockquote-footer" }, [
+                  _vm._v(_vm._s(_vm.infoCharacter.status)),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("blockquote", { staticClass: "blockquote mb-0" }, [
+                _c("p", { staticClass: "fw-bolder" }, [_vm._v("Especie.")]),
+                _vm._v(" "),
+                _c("footer", { staticClass: "blockquote-footer" }, [
+                  _vm._v(_vm._s(_vm.infoCharacter.species)),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("blockquote", { staticClass: "blockquote mb-0" }, [
+                _c("p", { staticClass: "fw-bolder" }, [_vm._v("Tipo.")]),
+                _vm._v(" "),
+                _c("footer", { staticClass: "blockquote-footer" }, [
+                  _vm._v(_vm._s(_vm.infoCharacter.type)),
+                ]),
+              ]),
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+          ]),
+        ]),
+      ]
+    ),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" },
+        },
+        [_vm._v("Cerrar")]
+      ),
+    ])
+  },
+]
 render._withStripped = true
 
 
